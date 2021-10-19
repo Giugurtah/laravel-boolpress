@@ -15,7 +15,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::paginate(5);
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -26,7 +26,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.posts.create');
     }
 
     /**
@@ -37,7 +37,13 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $post = new Post();
+
+        $post->fill($data);
+        $post->save();
+
+        return redirect()->route('admin.posts.show', $post->id);
     }
 
     /**
@@ -60,7 +66,8 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        return view('admin.posts.update', compact('post'));
     }
 
     /**
@@ -72,7 +79,11 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $data = $request->all();
+
+        $post->update($data);
+        return redirect()->route('admin.posts.show', $post->id);
     }
 
     /**
@@ -83,6 +94,7 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Post::destroy($id);
+        return redirect()->route('admin.posts.index');
     }
 }
