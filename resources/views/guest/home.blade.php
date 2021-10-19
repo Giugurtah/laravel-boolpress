@@ -83,6 +83,6 @@
 
             </div>
         </div>
-        <script src="{{ asset('js/app.js') }}"></script>
+        <script src="{{ asset('js/front.js') }}"></script>
     </body>
 </html>
