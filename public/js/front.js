@@ -1915,7 +1915,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'Component'
+  name: 'App',
+  data: function data() {
+    return {
+      data: []
+    };
+  },
+  methods: {},
+  created: function created() {
+    var _this = this;
+
+    axios.get('http://127.0.0.1:8000/api/posts').then(function (res) {
+      console.log(res);
+      _this.data = res.data;
+    });
+  }
 });
 
 /***/ }),
@@ -49935,6 +49949,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
 var app = new Vue({
   el: '#root',

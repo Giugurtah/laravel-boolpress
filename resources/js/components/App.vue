@@ -6,6 +6,20 @@
 
 <script>
     export default {
-        name: 'Component',
+        name: 'App',
+        data() {
+            return {
+                data: [],
+            }
+        },
+        methods: {
+
+        },
+        created: function(){
+            axios.get('http://127.0.0.1:8000/api/posts').then(res => {
+                console.log(res);
+                this.data = res.data;
+            })
+        }
     }
 </script>
