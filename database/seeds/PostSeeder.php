@@ -19,6 +19,7 @@ class PostSeeder extends Seeder
             $post->content = $faker->paragraphs(3, true);
             $post->image = $faker->imageUrl(300,300,'animals');
 
+            $post->category_id = rand(1, 5);
             $post->save();
         }
     }
