@@ -8,14 +8,14 @@ use Carbon\Carbon;
 
 class Post extends Model
 {
-    protected $fillable = ['title', 'content', 'image'];
+    protected $fillable = ['title', 'content', 'image', 'category_id'];
     
     public function getFormatDate() {
         return Carbon::create($this->created_at)->format('d-m-Y');
     }
 
     public function category() {
-        return $this->belongsTo('App\Models\Category.php');
+        return $this->belongsTo('App\Models\Category');
     }
     
     // Per renderlo personificabile dall'esterno

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     <div class="container">
         <h1>My posts</h1>
         <div class="text-right mb-3">
@@ -10,6 +11,7 @@
             <thead>
                 <tr>
                     <th scope="col">Title</th>
+                    <th scope="col">Category</th>
                     <th scope="col">Written in date</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -18,6 +20,7 @@
                 @forelse ($posts as $post)
                 <tr>
                     <td>{{ $post->title }}</td>
+                    <td>{{ $post->category->category }}</td>
                     <td>{{ $post->getFormatDate() }}</td>
                     <td>
                         <a href="{{ route('admin.posts.show', $post)}}" class="btn btn-primary">Show post</a>

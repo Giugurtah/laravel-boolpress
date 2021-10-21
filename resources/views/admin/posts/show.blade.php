@@ -3,6 +3,7 @@
 @section('content')
     <div class="container">
         <h1> {{ $post->title }} </h1>
+        <div> Category: {{ $post->category->category }} </div>
         <p> {{ $post->content }} </p>
     </div>
 @endsection
