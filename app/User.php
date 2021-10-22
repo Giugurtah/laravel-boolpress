@@ -6,6 +6,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+use App\User_info;
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -16,7 +18,7 @@ class User extends Authenticatable
     }
 
     public function userInfo() {
-        return $this->belongsTo('App\User_info');
+        return $this->hasOne('App\User_info');
     }
     
     /**

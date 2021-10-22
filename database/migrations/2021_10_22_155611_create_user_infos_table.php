@@ -15,10 +15,12 @@ class CreateUserInfosTable extends Migration
     {
         Schema::create('user_infos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->onDelete('set null')->constrained();
             $table->string('address')->nullable();
-            $table->string('phone_number', 15)->nullable();
-            $table->string('country', 3)->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('country')->nullable();
             $table->date('date_of_birth')->nullable();
+
             $table->timestamps();
         });
     }

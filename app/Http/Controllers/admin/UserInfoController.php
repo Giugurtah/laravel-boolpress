@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\User_info;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserInfoController extends Controller
 {
@@ -26,7 +28,14 @@ class UserInfoController extends Controller
      */
     public function create()
     {
-       return view('admin.user.create');
+        $user_info_list = User_info::all();
+        foreach ($user_info_list as $user_info) {
+            if ($user_info->user_id == Auth::id()) {
+                return redirect()->route('admin.userInfos.edit', $user_info->id);
+            }    
+        }
+        $user_info = new User_info;
+        return view('admin.userInfos.create', compact('user_info'));
     }
 
     /**
@@ -41,8 +50,10 @@ class UserInfoController extends Controller
 
         $user_info = new User_Info;
         $user_info->fill($data);
-
+        $user_info->user_id = Auth::id();
         $user_info->save();
+
+        Auth::user()->update($data);
 
         return redirect()->route('admin.posts.index');
     }
@@ -66,7 +77,8 @@ class UserInfoController extends Controller
      */
     public function edit($id)
     {
-        dd('edit');
+        $user_info = User_info::findOrFail($id);
+        return view('admin.userInfos.update', compact('user_info'));
     }
 
     /**
@@ -78,7 +90,12 @@ class UserInfoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user_info = User_info::findOrFail($id);
+        $data = $request->all();
+
+        $user_info->update($data);
+        Auth::user()->update($data);
+        return redirect()->route('admin.posts.index');
     }
 
     /**

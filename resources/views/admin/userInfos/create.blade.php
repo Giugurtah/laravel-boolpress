@@ -4,5 +4,5 @@
     action="{{route('admin.userInfos.store')}}"
 @endsection
 
-@section('method', 'POST')
+@section('method', '')
 

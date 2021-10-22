@@ -6,9 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class User_info extends Model
 {
-    protected $fillable = ['address', 'phone_number', 'country', 'date_of_birth'];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'address', 'phone_number', 'date_of_birth', 'country',
+    ];
 
     public function user() {
-        return $this->hasOne('App\User');
+        return $this->belongsTo('App\User');
     }
 }
