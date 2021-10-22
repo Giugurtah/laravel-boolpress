@@ -40,7 +40,7 @@
                 </tr>
                 @empty
                 <tr> 
-                    <td colspan="3" class="text-center">
+                    <td colspan="5" class="text-center">
                         There are no posts to show at the moment :(
                     </td>
                 </tr>

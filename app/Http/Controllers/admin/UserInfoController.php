@@ -28,12 +28,11 @@ class UserInfoController extends Controller
      */
     public function create()
     {
-        $user_info_list = User_info::all();
-        foreach ($user_info_list as $user_info) {
-            if ($user_info->user_id == Auth::id()) {
-                return redirect()->route('admin.userInfos.edit', $user_info->id);
-            }    
-        }
+        $user_info = User_info::where('user_id', Auth::id())->get();
+        if ($user_info->isNotEmpty()) {
+            return redirect()->route('admin.userInfos.edit', $user_info->first()->id);
+        } 
+
         $user_info = new User_info;
         return view('admin.userInfos.create', compact('user_info'));
     }
