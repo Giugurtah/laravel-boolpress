@@ -73,6 +73,12 @@
                                     </form>
 
                                     <a class="dropdown-item" href="{{ route('admin.posts.index') }}">Show posts list</a>
+
+                                    <a class="dropdown-item" href="{{ route('admin.posts.index') }}">Show category list</a>
+
+                                    <a class="dropdown-item" 
+                                    @if(Auth::user()->user_info) href="{{ route('admin.userInfos.edit') }}"
+                                    @else href="{{ route('admin.userInfos.create') }}" @endif>User options</a>
                                 </div>
                             </li>
                         @endguest

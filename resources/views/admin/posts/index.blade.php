@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    
     <div class="container">
         <h1>My posts</h1>
         <div class="text-right mb-3">
@@ -11,6 +12,7 @@
                 <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Category</th>
+                    <th scope="col">Written by</th>
                     <th scope="col">Written in date</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -20,6 +22,11 @@
                 <tr>
                     <td>{{ $post->title }}</td>
                     <td>{{ $post->category->category }}</td>
+                    <td>
+                        @if($post->user) {{ $post->user->name }}
+                        @else Unknown author
+                        @endif
+                    </td>
                     <td>{{ $post->getFormatDate() }}</td>
                     <td>
                         <a href="{{ route('admin.posts.show', $post)}}" class="btn btn-primary">Show post</a>
