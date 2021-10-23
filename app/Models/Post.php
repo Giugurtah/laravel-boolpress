@@ -10,6 +10,13 @@ class Post extends Model
 {
     protected $fillable = ['title', 'content', 'image', 'category_id'];
     
+    public function getCategoryName() {
+        if($this->category) {
+            return $this->category->category;
+        }
+        return "Nessuna categoria";
+    }
+
     public function getFormatDate() {
         return Carbon::create($this->created_at)->format('d-m-Y');
     }

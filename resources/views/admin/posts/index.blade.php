@@ -20,8 +20,8 @@
             <tbody>
                 @forelse ($posts as $post)
                 <tr>
-                    <td>{{ $post->title }}</td>
-                    <td>{{ $post->category->category }}</td>
+                    <td class="text-capitalize">{{ $post->title }}</td>
+                    <td>{{ $post->getCategoryName() }}</td>
                     <td>
                         @if($post->user) {{ $post->user->name }}
                         @else Unknown author

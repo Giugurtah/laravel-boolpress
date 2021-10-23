@@ -18,7 +18,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate(5);
+        $posts = Post::where('user_id', Auth::id())->paginate(5);
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -30,7 +30,8 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.posts.create', compact('categories'));
+        $post = new Post;
+        return view('admin.posts.create', compact(['post','categories']));
     }
 
     /**
