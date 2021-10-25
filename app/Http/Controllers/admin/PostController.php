@@ -4,9 +4,11 @@ namespace App\Http\Controllers\admin;
 
 use App\Models\Post;
 use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -30,8 +32,9 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $tags = Tag::all();
         $post = new Post;
-        return view('admin.posts.create', compact(['post','categories']));
+        return view('admin.posts.create', compact(['post','categories', 'tags']));
     }
 
     /**
@@ -42,12 +45,26 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required|unique:posts|max:50',
+            'content' => 'required|string',
+            'image' => 'nullable|string',
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'nullable|exists:tags,id'
+        ], [
+            'required' => 'The :attribute field must not be empty',
+            'max' => 'The :attribute max legth is :max',
+            'title.unique' => 'A post with the same title already exists',
+        ]);
+
         $data = $request->all();
         $post = new Post();
 
         $post->user_id = Auth::id();
         $post->fill($data);
         $post->save();
+
+        if(array_key_exists('tags', $data)) $post->tag()->attach($data['tags']);
 
         return redirect()->route('admin.posts.show', $post->id);
     }
@@ -74,7 +91,9 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
         $categories = Category::all();
-        return view('admin.posts.update', compact(['post', 'categories']));
+        $tags = Tag::all();
+        $tagIds = $post->tag->pluck('id')->toArray();
+        return view('admin.posts.update', compact(['post', 'categories', 'tags', 'tagIds']));
     }
 
     /**
@@ -86,10 +105,27 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'title' => ['required', Rule::unique('posts')->ignore($id), 'max:50'],
+            'content' => 'required|string',
+            'image' => 'nullable|string',
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'nullable|exists:tags,id'
+        ], [
+            'required' => 'The :attribute field must not be empty',
+            'max' => 'The :attribute max legth is :max',
+            'title.unique' => 'A post with the same title already exists',
+        ]);
+
         $post = Post::findOrFail($id);
         $data = $request->all();
 
         $post->update($data);
+        if(!array_key_exists('tags', $data)) {
+            $post->tag()->detach();
+        } else {
+            $post->tag()->sync($data['tags']);
+        }
         return redirect()->route('admin.posts.show', $post->id);
     }
 

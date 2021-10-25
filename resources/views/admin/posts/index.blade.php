@@ -24,14 +24,14 @@
                         @if($post->category)
                         <span class="badge badge-pill text-light" style="background-color: {{$post->category->color}}">{{ $post->category->category }}</span>
                         @else 
-                        "No category"
+                        -
                         @endif
                     </td>
                     <td>
                         @forelse ($post->tag as $tag)
                             <span class="badge badge-pill text-light" style="background-color: {{$tag->color}}">{{ $tag->tag }}</span>
                         @empty
-                            "No tags"
+                            -
                         @endforelse
                     </td>
                     <td>{{ $post->getFormatDate() }}</td>
