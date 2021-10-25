@@ -1,6 +1,5 @@
 <template>
     <div id="post_display" class="container">
-        <h1 class="my-2">My posts:</h1>
         <div v-if="posts.length > 0">
             <PostCard v-for="post in posts" :key="post.id" :post="post"/>
         </div>
@@ -24,8 +23,8 @@ export default {
     },
     created: function(){
         axios.get('http://127.0.0.1:8000/api/posts').then(res => {
-            console.log(res.data.posts);
-            this.posts = res.data.posts;
+            console.log(res.data.posts.data);
+            this.posts = res.data.posts.data;
         })
     }
 }

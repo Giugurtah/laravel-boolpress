@@ -1953,18 +1953,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "PostCard",
-  props: ['post'],
-  methods: {
-    getCategory: function getCategory() {
-      if (this.post.category_id == null) {
-        return "Nessuna categoria";
-      }
-
-      return this.post.category.category;
-    }
-  }
+  props: ['post']
 });
 
 /***/ }),
@@ -2011,7 +2013,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'PostDisplay',
@@ -2027,8 +2028,8 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     axios.get('http://127.0.0.1:8000/api/posts').then(function (res) {
-      console.log(res.data.posts);
-      _this.posts = res.data.posts;
+      console.log(res.data.posts.data);
+      _this.posts = res.data.posts.data;
     });
   }
 });
@@ -38476,9 +38477,60 @@ var render = function() {
       _c("p", [_vm._v(_vm._s(_vm.post.content))]),
       _vm._v(" "),
       _c("div", { staticClass: "post_info" }, [
-        _c("div", [_vm._v("Author: " + _vm._s(_vm.post.user.name))]),
+        _c("div", [
+          _c("span", { staticClass: "text-dark font-weight-bold" }, [
+            _vm._v("Author:")
+          ]),
+          _vm._v(" " + _vm._s(_vm.post.user.name))
+        ]),
         _vm._v(" "),
-        _c("div", [_vm._v("Category: " + _vm._s(_vm.getCategory()))])
+        _c("div", [
+          _c("span", { staticClass: "text-dark font-weight-bold" }, [
+            _vm._v("Category:")
+          ]),
+          _vm._v(" "),
+          _vm.post.category
+            ? _c(
+                "span",
+                {
+                  staticClass: "badge badge-pill text-light",
+                  style: { backgroundColor: _vm.post.category.color }
+                },
+                [_vm._v(_vm._s(_vm.post.category.category))]
+              )
+            : _c("span", [_vm._v("None")])
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c("span", { staticClass: "text-dark font-weight-bold" }, [
+            _vm._v("Tags:")
+          ]),
+          _vm._v(" "),
+          _vm.post.tag
+            ? _c(
+                "div",
+                { staticClass: "d-inline-block" },
+                _vm._l(_vm.post.tag, function(singleTag) {
+                  return _c(
+                    "span",
+                    {
+                      key: singleTag.id,
+                      staticClass: "badge badge-pill text-light",
+                      style: { backgroundColor: singleTag.color }
+                    },
+                    [
+                      _vm._v(
+                        "\n              " +
+                          _vm._s(singleTag.tag) +
+                          "\n            "
+                      )
+                    ]
+                  )
+                }),
+                0
+              )
+            : _c("span", [_vm._v("None")])
+        ])
       ])
     ])
   ])
@@ -38535,8 +38587,6 @@ var render = function() {
     "div",
     { staticClass: "container", attrs: { id: "post_display" } },
     [
-      _c("h1", { staticClass: "my-2" }, [_vm._v("My posts:")]),
-      _vm._v(" "),
       _vm.posts.length > 0
         ? _c(
             "div",

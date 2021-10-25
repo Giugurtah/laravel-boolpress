@@ -6,8 +6,19 @@
     <div class="card-body">
         <p>{{ post.content }}</p>
         <div class="post_info">
-          <div>Author: {{post.user.name}}</div>
-          <div>Category: {{getCategory()}}</div>
+          <div><span class="text-dark font-weight-bold">Author:</span> {{post.user.name}}</div>
+          <div><span class="text-dark font-weight-bold">Category:</span>
+            <span v-if="post.category" class="badge badge-pill text-light" v-bind:style="{backgroundColor: post.category.color}">{{ post.category.category }}</span>
+            <span v-else>None</span>
+          </div>
+          <div><span class="text-dark font-weight-bold">Tags:</span>
+            <div v-if="post.tag" class="d-inline-block">
+              <span v-for="singleTag in post.tag" :key="singleTag.id" class="badge badge-pill text-light" v-bind:style="{backgroundColor: singleTag.color}">
+                {{singleTag.tag}}
+              </span>
+            </div>
+            <span v-else>None</span>
+          </div>
         </div>
     </div>
   </div>
@@ -17,14 +28,6 @@
 export default {
     name: "PostCard",
     props: ['post'],
-    methods: {
-      getCategory: function(){
-        if(this.post.category_id == null) {
-          return "Nessuna categoria"
-        }
-        return this.post.category.category
-      }
-    }
 }
 </script>
 
