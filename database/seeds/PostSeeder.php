@@ -1,11 +1,13 @@
 <?php
-
-use App\Models\Category;
-use App\User; 
-
 use Illuminate\Database\Seeder;
+
 use App\Models\Post;
 use Faker\Generator as Faker;
+
+use App\Models\Category;
+use App\Models\Tag;
+use App\User; 
+
 
 class PostSeeder extends Seeder
 {
@@ -17,6 +19,7 @@ class PostSeeder extends Seeder
     public function run(Faker $faker)
     {
         $categories = Category::select('id')->pluck('id')->toArray();
+        $tags = Tag::select('id')->pluck('id')->toArray();
         $users = User::select('id')->pluck('id')->toArray();
 
         for($i = 0; $i < 70; $i++) {
@@ -27,7 +30,12 @@ class PostSeeder extends Seeder
             
             $post->category_id = $categories[array_rand($categories, 1)];
             $post->user_id = $users[array_rand($users, 1)];
+            
+            // $post->tag()->sync([$tags($tagKey[0]), $tags($tagKey[1])]);
             $post->save();
+            
+            $tagKey = array_rand($tags, 2);
+            $post->tag()->sync([$tags[$tagKey[0]], $tags[$tagKey[1]]]);
         }
     }
 }

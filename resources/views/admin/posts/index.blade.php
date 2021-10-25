@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
-    
+@section('content')   
     <div class="container">
         <h1>My posts</h1>
         <div class="text-right mb-3">
@@ -12,7 +11,7 @@
                 <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Category</th>
-                    <th scope="col">Written by</th>
+                    <th scope="col">Tags</th>
                     <th scope="col">Written in date</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -21,11 +20,19 @@
                 @forelse ($posts as $post)
                 <tr>
                     <td class="text-capitalize">{{ $post->title }}</td>
-                    <td>{{ $post->getCategoryName() }}</td>
                     <td>
-                        @if($post->user) {{ $post->user->name }}
-                        @else Unknown author
+                        @if($post->category)
+                        <span class="badge badge-pill text-light" style="background-color: {{$post->category->color}}">{{ $post->category->category }}</span>
+                        @else 
+                        "No category"
                         @endif
+                    </td>
+                    <td>
+                        @forelse ($post->tag as $tag)
+                            <span class="badge badge-pill text-light" style="background-color: {{$tag->color}}">{{ $tag->tag }}</span>
+                        @empty
+                            "No tags"
+                        @endforelse
                     </td>
                     <td>{{ $post->getFormatDate() }}</td>
                     <td>
